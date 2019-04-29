@@ -17,15 +17,16 @@ Connection conn;
     ResultSet rs;
     
  public void dataTabel(){
-        String sqlTabel ="select * from tabel_pre3";
+        String sql ="select * from tabel_pre3";
         try {
-            ps= conn.prepareStatement(sqlTabel);
+            ps= conn.prepareStatement(sql);
             rs = ps.executeQuery();
             tabelinput.setModel(DbUtils.resultSetToTableModel(rs));
         } catch (Exception e) {
              JOptionPane.showMessageDialog(rootPane, e);
         }
     }
+ 
     /**
      * Creates new form pretest3
      */
@@ -34,7 +35,8 @@ Connection conn;
        
         tglpenjualan.setDateFormat(new SimpleDateFormat());
     }
-
+private void UpdateData() {
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -65,7 +67,7 @@ Connection conn;
         jButton1 = new javax.swing.JButton();
         bln = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        update = new javax.swing.JButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -102,12 +104,6 @@ Connection conn;
 
         jLabel6.setText("Harga");
 
-        idpenjualan.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                idpenjualanActionPerformed(evt);
-            }
-        });
-
         jLabel7.setText("Rp.");
 
         insert.setText("INSERT");
@@ -128,6 +124,11 @@ Connection conn;
                 "ID Penjualan ", "ID Barang", "Nama Barang", "Tanggal Penjualan", "Harga"
             }
         ));
+        tabelinput.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelinputMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tabelinput);
 
         jButton1.setText("CARI");
@@ -146,7 +147,12 @@ Connection conn;
 
         jLabel8.setText("Cari Berdasarkan Bulan");
 
-        jLabel9.setText("Nama :Toni (16111100008)");
+        update.setText("UPDATE");
+        update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -177,16 +183,18 @@ Connection conn;
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jharga, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(bln, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8)
-                    .addComponent(jButton1))
-                .addGap(38, 38, 38))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel9)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(bln, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8)
+                            .addComponent(jButton1))
+                        .addGap(38, 38, 38))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(update)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -196,9 +204,7 @@ Connection conn;
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
-                .addComponent(jLabel9)
-                .addGap(66, 66, 66)
+                .addGap(84, 84, 84)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(idpenjualan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -223,7 +229,9 @@ Connection conn;
                     .addComponent(jharga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(insert)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(insert)
+                    .addComponent(update))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(297, 297, 297))
@@ -248,10 +256,6 @@ Connection conn;
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void idpenjualanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idpenjualanActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_idpenjualanActionPerformed
 
     private void insertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertActionPerformed
     String sql ="insert into tabel_pre3 values(?,?,?,?,?)";
@@ -449,6 +453,33 @@ Connection conn;
         // TODO add your handling code here:
     }//GEN-LAST:event_blnActionPerformed
 
+    private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
+try {
+            String sql ="UPDATE tabel_pre3 SET id_penjualan= '"+idpenjualan.getText()+"', "
+                                            + "id_barang = '"+idbarang.getText()+"', "
+                                            + "nama_barang = '"+namabarang.getText()+"',"
+                                            + "tgl_penjualan= '"+tglpenjualan.getSelectedItem()+"' "
+                                            + "harga = '"+jharga.getText()+"',"
+                                            + "WHERE id_penjualan = '"+idpenjualan.getText()+"'";
+            java.sql.Connection conn=(Connection)koneksi.connpretest3();
+            java.sql.PreparedStatement ps=conn.prepareStatement(sql);
+            ps.execute();
+            JOptionPane.showMessageDialog(null, "data berhasil di edit");
+        } catch (Exception e) {}
+        datatabel();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_updateActionPerformed
+
+    private void tabelinputMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelinputMouseClicked
+        idpenjualan.setText(tabelinput.getValueAt(tabelinput.getSelectedRow(), 0).toString());
+        idbarang.setText(tabelinput.getValueAt(tabelinput.getSelectedRow(), 1).toString());
+        namabarang.setText(tabelinput.getValueAt(tabelinput.getSelectedRow(), 2).toString());
+       tglpenjualan.setSelectedItem(tabelinput.getValueAt(tabelinput.getSelectedRow(), 3).toString());
+        jharga.setText(tabelinput.getValueAt(tabelinput.getSelectedRow(), 4).toString());
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tabelinputMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -498,7 +529,6 @@ Connection conn;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -507,5 +537,10 @@ Connection conn;
     private javax.swing.JTextField namabarang;
     private javax.swing.JTable tabelinput;
     private org.freixas.jcalendar.JCalendarCombo tglpenjualan;
+    private javax.swing.JButton update;
     // End of variables declaration//GEN-END:variables
+
+    private void datatabel() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
